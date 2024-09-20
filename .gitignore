@@ -1,0 +1,4 @@
+/frontend/.env.local
+/python_fertilizer/venv/
+/python-backend/venv/
+/frontend/node_modules/

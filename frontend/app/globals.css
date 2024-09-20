@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /* For Chrome, Safari, Edge, and Opera */
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button {
+      @apply appearance-none; /* Using Tailwind utility to remove appearance */
+    }
+  
+    /* For Firefox */
+    input[type="number"] {
+      @apply appearance-none; /* Using Tailwind utility to remove appearance */
+      -moz-appearance: textfield; /* For Firefox */
+    }
+  }
+  
