@@ -1,11 +1,11 @@
-# Mitti - Sustainable Agriculture Solution
+# 🌱 Mitti - Sustainable Agriculture Solution
 
 ## Overview
-**Mitti** is a smart solution designed to revolutionize sustainable farming practices. By leveraging real-time soil data, machine learning, and weather insights, Mitti provides personalized fertilizer recommendations to optimize agricultural productivity while promoting eco-friendly practices.
+**Mitti** is a smart solution designed to revolutionize sustainable farming practices. By leveraging real-time soil data, machine learning, and weather insights, Mitti provides personalized fertilizer recommendations to optimize agricultural productivity while promoting eco-friendly practices. 🌾
 
 ---
 
-## Features
+## ✨ Features
 - **Real-Time Soil Analysis**: Integration with NPK, moisture, and pH sensors to capture soil health data.
 - **Tailored Fertilizer Recommendations**: Machine learning-powered suggestions based on soil health, crop type, and weather patterns.
 - **Weather Integration**: Location-based updates using OpenWeather and Open-Meteo APIs.
@@ -14,7 +14,7 @@
 
 ---
 
-## Technologies Used
+## 🛠️ Technologies Used
 ### Hardware:
 - NPK Sensor
 - Soil Moisture Sensor
@@ -28,13 +28,11 @@
 - **Frontend**: Next.js, React, TailwindCSS
 - **Backend**: Flask, Express.js, Node.js
 - **Machine Learning**: NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch
-- **Database**: MySQL
-- **Cloud**: AWS/Azure, Firebase
 - **APIs**: OpenWeather API, Open-Meteo API, SMS/Email API
 
 ---
 
-## Installation and Setup
+## 🚀 Installation and Setup
 ### Prerequisites
 - Node.js and npm
 - Python 3.9+
@@ -81,7 +79,7 @@
 
 ---
 
-## Usage
+## 🧑‍🌾 Usage
 1. Connect the sensors to the hardware setup.
 2. Input the soil data manually or allow automatic data capture.
 3. View fertilizer recommendations on the web app.
@@ -89,7 +87,7 @@
 
 ---
 
-## Future Scope
+## 🌟 Future Scope
 - Expand support for more sensors and crop types.
 - Enhance machine learning models for better accuracy.
 - Develop a mobile application for easier access.
@@ -97,17 +95,17 @@
 
 ---
 
-## Contributing
+## 🤝 Contributing
 We welcome contributions! Please create a pull request or submit an issue for feature suggestions or bug reports.
 
 ---
 
-## License
+## 📜 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
-## Acknowledgments
+## 🙏 Acknowledgments
 - Team **CropCODE**
 - SIH 2024
 - Farmers and Agricultural Experts who inspired this solution.
