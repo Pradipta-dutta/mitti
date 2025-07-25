@@ -1,5 +1,5 @@
 /frontend/.env.local
 /python_fertilizer/venv/
-/python-backend/venv/
+/python-backend/myvenv/
 /frontend/node_modules/
 __pycache__/
