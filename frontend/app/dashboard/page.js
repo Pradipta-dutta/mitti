@@ -3,18 +3,27 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import soilHealthImage from '/public/assets/soil-health.jpg'
-import dashboardImage from '/public/assets/dashboard.jpg'
-import fertilizerImage from '/public/assets/fertilizer.jpg';
-import advicingImage from '/public/assets/advicing.jpg';
+import ModernCard from '../components/ModernCard';
+import ModernButton from '../components/ModernButton';
+import { 
+  ThermometerIcon,
+  CloudIcon,
+  EyeIcon,
+  BeakerIcon,
+  SparklesIcon,
+  DocumentChartBarIcon,
+  ArrowRightIcon
+} from '@heroicons/react/24/outline';
 
 export default function Dashboard() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchWeather(lat, lon) {
       try {
+        setLoading(true);
         const res = await axios.get('/api/weather', {
           params: {
             lat,
@@ -29,6 +38,8 @@ export default function Dashboard() {
       } catch (error) {
         setError('Error fetching weather data: ' + (error.response ? error.response.data : error.message));
         console.error('Error fetching weather data:', error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -42,157 +53,176 @@ export default function Dashboard() {
           error => {
             setError('Error getting location: ' + error.message);
             console.error('Error getting location:', error);
+            setLoading(false);
           }
         );
       } else {
         setError('Geolocation is not supported by this browser.');
+        setLoading(false);
       }
     }
     getCurrentLocation();
   }, []);
 
   return (
-    <div className="relative min-h-screen">
-      <Image
-        src={dashboardImage}
-        alt="Background Image"
-        layout="fill"
-        objectFit="cover"
-        className="absolute inset-0"
-      />
-      <div className="absolute inset-0 bg-white opacity-40 z-10"></div>
-      <div className="relative z-20">
-        {error && <p>{error}</p>}
-        {weather ? (
-          <div className="card flex flex-wrap gap-10 justify-center items-center pt-8">
-            <div className="item w-64 flex flex-col gap-3 justify-center py-5 px-10 rounded-3xl h-40 bg-gradient-to-br from-yellow-100 to-orange-300">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
-                  <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415" />
-                  <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1" />
-                </svg>
-              </span>
-              <div className="info">
-                <div className='text-2xl'>{weather.temperature !== undefined ? weather.temperature + ' °C' : (<div className='flex justify-center items-center'>
-                  <div className='w-8 h-8 border-4 border-cyan-500 border-t-transparent border-solid rounded-full animate-spin'></div>
-                </div>)}</div>
-                <div className='text-slate-500 font-semibold'>Temperature</div>
-              </div>
-            </div>
-            <div className="item w-64 flex flex-col gap-3 justify-center py-5 px-10 rounded-3xl h-40 bg-gradient-to-br from-sky-200 to-blue-400">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cloud-drizzle-fill" viewBox="0 0 16 16">
-                  <path d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m-3.5 1.5a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m6 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317m.747-8.498a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973" />
-                </svg>
-              </span>
-              <div className="info">
-                <div className='text-2xl'>{weather.rainfall !== undefined ? weather.rainfall + ' mm' : (<div className='flex justify-center items-center'>
-                  <div className='w-8 h-8 border-4 border-cyan-500 border-t-transparent border-solid rounded-full animate-spin'></div>
-                </div>)}</div>
-                <div className='text-slate-500 font-semibold'>Rainfall</div>
-              </div>
-            </div>
-            <div className="item w-64 flex flex-col gap-3 justify-center py-5 px-10 rounded-3xl h-40 bg-gradient-to-br from-[#e5e7eb] to-[#9ca3af]">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-wind" viewBox="0 0 16 16">
-                  <path d="M12.5 2A2.5 2.5 0 0 0 10 4.5a.5.5 0 0 1-1 0A3.5 3.5 0 1 1 12.5 8H.5a.5.5 0 0 1 0-1h12a2.5 2.5 0 0 0 0-5m-7 1a1 1 0 0 0-1 1 .5.5 0 0 1-1 0 2 2 0 1 1 2 2h-5a.5.5 0 0 1 0-1h5a1 1 0 0 0 0-2M0 9.5A.5.5 0 0 1 .5 9h10.042a3 3 0 1 1-3 3 .5.5 0 0 1 1 0 2 2 0 1 0 2-2H.5a.5.5 0 0 1-.5-.5" />
-                </svg>
-              </span>
-              <div className="info">
-                <div className='text-2xl'>{weather.windSpeed !== undefined ? weather.windSpeed + ' km/h' : (<div className='flex justify-center items-center'>
-                  <div className='w-8 h-8 border-4 border-cyan-500 border-t-transparent border-solid rounded-full animate-spin'></div>
-                </div>)}</div>
-                <div className='text-slate-500 font-semibold'>Windspeed</div>
-              </div>
-            </div>
-            <div className="item w-48 flex flex-col gap-3 justify-center py-5 px-10 rounded-3xl h-40 bg-gradient-to-br from-emerald-200 to-teal-400">
-              <Link href="/weather"><div className="info flex gap-1 items-center justify-center">
-                <div className='text-2xl'>See all</div>
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                  <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
-                </svg></span>
-              </div></Link>
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-earth-900 dark:via-earth-900 dark:to-earth-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-display font-bold text-earth-900 dark:text-earth-100 mb-2">
+            Farm Dashboard
+          </h1>
+          <p className="text-earth-600 dark:text-earth-400 text-lg">
+            Real-time insights for your sustainable farming operations
+          </p>
+        </div>
+
+        {/* Error State */}
+        {error && (
+          <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-red-600 dark:text-red-400">{error}</p>
+          </div>
+        )}
+
+        {/* Weather Cards */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold text-earth-900 dark:text-earth-100 mb-6">
+            Current Weather Conditions
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ModernCard
+              title="Temperature"
+              value={weather?.temperature || '--'}
+              unit="°C"
+              icon={ThermometerIcon}
+              color="warning"
+              loading={loading}
+              trend="up"
+              trendValue="+2°"
+            />
+            <ModernCard
+              title="Rainfall"
+              value={weather?.rainfall || '--'}
+              unit="mm"
+              icon={CloudIcon}
+              color="info"
+              loading={loading}
+            />
+            <ModernCard
+              title="Wind Speed"
+              value={weather?.windSpeed || '--'}
+              unit="km/h"
+              icon={EyeIcon}
+              color="secondary"
+              loading={loading}
+            />
+            <div className="flex items-center justify-center">
+              <ModernButton
+                href="/weather"
+                variant="outline"
+                size="lg"
+                icon={ArrowRightIcon}
+                iconPosition="right"
+                className="w-full h-full min-h-[120px] flex-col space-y-2"
+              >
+                <span className="text-lg font-semibold">View All</span>
+                <span className="text-sm opacity-75">Weather Data</span>
+              </ModernButton>
             </div>
           </div>
-        ) : (
-          (<div className='flex h-48 justify-center items-center py-10'>
-            <div className='w-8 h-8 border-4 border-cyan-500 border-t-transparent border-solid rounded-full animate-spin'></div>
-          </div>)
-        )}
-        <section className="cardFeatures py-8 mx-10 flex flex-wrap justify-center gap-14">
-          <Link href="/soilHealth"><div className="cursor-pointer group relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-72 hover:shadow-lg transition-shadow duration-300">
-            <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-              <Image
-                className="transition-transform duration-500 ease-[cubic-bezier(0.25, 1, 0.5, 1)] transform group-hover:scale-110"
-                src={soilHealthImage}
-                alt="investment-seed-round"
-                layout="fill"
-                objectFit="cover"
-              />
+        </div>
+
+        {/* Feature Cards */}
+        <div>
+          <h2 className="text-xl font-semibold text-earth-900 dark:text-earth-100 mb-6">
+            Smart Agriculture Tools
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Soil Health Analysis */}
+            <div className="group relative bg-white dark:bg-earth-800 rounded-xl border border-earth-200 dark:border-earth-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 dark:from-primary-500/10 dark:to-secondary-500/10" />
+              <div className="relative p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+                    <BeakerIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-earth-900 dark:text-earth-100">
+                    Soil Health Analysis
+                  </h3>
+                </div>
+                <p className="text-earth-600 dark:text-earth-400 mb-6 leading-relaxed">
+                  Analyze key soil parameters including NPK levels, pH, and moisture content for optimal fertilizer recommendations and sustainable farming practices.
+                </p>
+                <ModernButton
+                  href="/soilHealth"
+                  variant="primary"
+                  size="md"
+                  icon={ArrowRightIcon}
+                  iconPosition="right"
+                  className="w-full"
+                >
+                  Analyze Soil
+                </ModernButton>
+              </div>
             </div>
-            <div className="p-4">
-              <h6 className="mb-2 text-slate-800 text-xl font-semibold">
-                Soil Health Analysis
-              </h6>
-              <p className="text-slate-600 leading-normal font-light">
-              Soil health analysis focuses on key parameters, like nutrient levels such as nitrogen (N), phosphorus (P), and potassium (K), along with pH, and moisture. This ensures optimal fertilizer use, promoting sustainable farming and improving crop yields.
-              </p>
+
+            {/* Fertilizer Recommendations */}
+            <div className="group relative bg-white dark:bg-earth-800 rounded-xl border border-earth-200 dark:border-earth-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary-500/5 to-primary-500/5 dark:from-secondary-500/10 dark:to-primary-500/10" />
+              <div className="relative p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="p-3 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg">
+                    <SparklesIcon className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-earth-900 dark:text-earth-100">
+                    Fertilizer Engine
+                  </h3>
+                </div>
+                <p className="text-earth-600 dark:text-earth-400 mb-6 leading-relaxed">
+                  Get AI-powered fertilizer recommendations based on soil health, crop type, and weather patterns to maximize yield and sustainability.
+                </p>
+                <ModernButton
+                  href="/fertilizerType"
+                  variant="secondary"
+                  size="md"
+                  icon={ArrowRightIcon}
+                  iconPosition="right"
+                  className="w-full"
+                >
+                  Get Recommendations
+                </ModernButton>
+              </div>
             </div>
-            <div className="px-4 pb-4 pt-0 mt-2">
-              <button className="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                Check Now
-              </button>
+
+            {/* Crop Type Integration */}
+            <div className="group relative bg-white dark:bg-earth-800 rounded-xl border border-earth-200 dark:border-earth-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 dark:from-green-500/10 dark:to-blue-500/10" />
+              <div className="relative p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                    <DocumentChartBarIcon className="w-6 h-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-earth-900 dark:text-earth-100">
+                    Crop Recommendations
+                  </h3>
+                </div>
+                <p className="text-earth-600 dark:text-earth-400 mb-6 leading-relaxed">
+                  Discover the best crop varieties for your soil conditions and climate, integrating weather data for optimal agricultural planning.
+                </p>
+                <ModernButton
+                  href="/cropType"
+                  variant="outline"
+                  size="md"
+                  icon={ArrowRightIcon}
+                  iconPosition="right"
+                  className="w-full"
+                >
+                  Find Best Crops
+                </ModernButton>
+              </div>
             </div>
-          </div></Link>
-          <Link href="/fertilizerType"><div className="cursor-pointer group relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-72 hover:shadow-lg transition-shadow duration-300">
-            <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-              <Image
-                className="transition-transform duration-500 ease-[cubic-bezier(0.25, 1, 0.5, 1)] transform group-hover:scale-110"
-                src={fertilizerImage}
-                alt="investment-seed-round"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <div className="p-4">
-              <h6 className="mb-2 text-slate-800 text-xl font-semibold">
-                Fertilizer Recommendation Engine
-              </h6>
-              <p className="text-slate-600 leading-normal font-light">
-                The fertilizer recommendation engine uses soil data, crop type, and weather patterns to recommend the fertilizer types and amounts. This enhances resource use, supports sustainable farming, and improves crop yields.
-              </p>
-            </div>
-            <div className="px-4 pb-4 pt-0 mt-2">
-              <button className="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                Check Now
-              </button>
-            </div>
-          </div></Link>
-          <Link href="/cropType"><div className="cursor-pointer group relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-72 hover:shadow-lg transition-shadow duration-300">
-            <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-              <Image
-                className="transition-transform duration-500 ease-[cubic-bezier(0.25, 1, 0.5, 1)] transform group-hover:scale-110"
-                src={advicingImage}
-                alt="investment-seed-round"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <div className="p-4">
-              <h6 className="mb-2 text-slate-800 text-xl font-semibold">
-              Crop Type & Weather Integration
-              </h6>
-              <p className="text-slate-600 leading-normal font-light">
-                Crop type and weather integration considers plant species and climate conditions to optimize growth. This approach adjusts farming practices, ensures efficient resource use, and boosts overall crop performance.
-              </p>
-            </div>
-            <div className="px-4 pb-4 pt-0 mt-2">
-              <button className="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                Check Now
-              </button>
-            </div>
-          </div></Link>
-        </section>
+          </div>
+        </div>
       </div>
     </div>
   );

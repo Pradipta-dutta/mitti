@@ -1,17 +1,17 @@
+import ModernHero from "./components/ModernHero";
 import Aboutus from "./components/Aboutus";
 import Contactus from "./components/Contactus";
 import Features from "./components/Features";
-import Introduction from "./components/Introduction";
 import Services from "./components/Services";
 
 export default function Home() {
   return (
-    <>
-      <Introduction/>
+    <div className="overflow-hidden">
+      <ModernHero/>
       <Services/>
       <Features/>
       <Contactus/>
       <Aboutus/>
-    </>
+    </div>
   );
 }
