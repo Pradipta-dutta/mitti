@@ -106,6 +106,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ---
 
 ## 🙏 Acknowledgments
-- Team **CropCODE**
-- SIH 2024
+- Team **Team TechFrost**
 - Farmers and Agricultural Experts who inspired this solution.
