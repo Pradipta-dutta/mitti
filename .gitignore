@@ -3,3 +3,4 @@
 /python-backend/myvenv/
 /frontend/node_modules/
 __pycache__/
+.env
